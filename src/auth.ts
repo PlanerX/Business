@@ -21,12 +21,19 @@ export async function adminLogin(
   return result.user;
 }
 
+// Verify admin identity
+export function isAdmin(user: User | null): boolean {
+  const adminUID = import.meta.env.VITE_ADMIN_UID;
+
+  return Boolean(user && adminUID && user.uid === adminUID);
+}
+
 // Admin logout
 export async function adminLogout() {
   await signOut(auth);
 }
 
-// Check login status
+// Check authentication
 export function checkAuth(
   callback: (user: User | null) => void
 ) {
