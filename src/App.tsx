@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import AdminPanel from "./AdminPanel";
 import { getProducts, type Product } from "./products";
@@ -5,42 +6,39 @@ import { getProducts, type Product } from "./products";
 export default function App() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [adminOpen, setAdminOpen] = useState(false);
-  const [cart, setCart] = useState<Product[]>([]);
-  const [category, setCategory] = useState("All");
   const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("All");
+  const [adminOpen, setAdminOpen] = useState(false);
 
   async function loadProducts() {
     try {
       const data = await getProducts();
       setProducts(data);
     } catch (error) {
-      console.error("Product loading error:", error);
+      console.error("Products loading failed:", error);
     } finally {
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    void loadProducts();
+    loadProducts();
   }, []);
 
   const categories = [
     "All",
-    "E-book",
-    "App / APK",
-    "Template",
-    "Other"
+    ...Array.from(new Set(products.map((p) => p.category)))
   ];
 
-  const filteredProducts = products.filter((product) => {
-    const matchesCategory =
-      category === "All" || product.category === category;
-
+  const filtered = products.filter((p) => {
     const matchesSearch =
-      product.title.toLowerCase().includes(search.toLowerCase());
+      p.title.toLowerCase().includes(search.toLowerCase()) ||
+      p.description.toLowerCase().includes(search.toLowerCase());
 
-    return matchesCategory && matchesSearch;
+    const matchesCategory =
+      category === "All" || p.category === category;
+
+    return matchesSearch && matchesCategory;
   });
 
   if (adminOpen) {
@@ -48,13 +46,7 @@ export default function App() {
       <div>
         <button
           onClick={() => setAdminOpen(false)}
-          style={{
-            margin: 15,
-            padding: 12,
-            borderRadius: 10,
-            border: "1px solid #ddd",
-            background: "white"
-          }}
+          style={backButton}
         >
           ← Back to Store
         </button>
@@ -64,248 +56,187 @@ export default function App() {
   }
 
   return (
-    <main style={{ fontFamily: "Arial, sans-serif", color: "#171321" }}>
-      <nav style={styles.nav}>
-        <strong>ANSU<span style={{ color: "#7955df" }}>CREATE.</span></strong>
+    <main>
+      <nav className="navbar">
+        <a className="brand" href="#">
+          ANSU<span>CREATE.</span>
+        </a>
 
-        <div style={{ display: "flex", gap: 18 }}>
-          <a href="#home">Home</a>
-          <a href="#products">Products</a>
+        <div className="nav-links">
+          <a href="#products">Explore</a>
           <a href="#about">About</a>
           <button
+            className="admin-button"
             onClick={() => setAdminOpen(true)}
-            style={styles.adminButton}
           >
-            Admin
+            Admin Login
           </button>
         </div>
       </nav>
 
-      <section id="home" style={styles.hero}>
-        <p style={{ color: "#7955df", fontWeight: 700 }}>
-          ✦ DIGITAL PRODUCTS, MADE SIMPLE
-        </p>
+      <section className="hero">
+        <div className="hero-content">
+          <div className="eyebrow">
+            <span className="dot" />
+            DIGITAL PRODUCTS · BUILT WITH IDEAS
+          </div>
 
-        <h1>
-          Ideas into
-          <br />
-          <span style={{ color: "#7955df" }}>Products.</span>
-        </h1>
+          <h1>
+            Ideas into
+            <br />
+            <span>Products.</span>
+          </h1>
 
-        <p>
-          Discover useful digital products, creative tools, apps
-          and resources designed to help you do more.
-        </p>
+          <p>
+            Discover useful apps, digital tools and resources
+            designed to make your everyday life better.
+          </p>
 
-        <a href="#products" style={styles.primaryButton}>
-          Explore products →
-        </a>
+          <a className="hero-cta" href="#products">
+            Explore Products <span>↗</span>
+          </a>
+        </div>
+
+        <div className="hero-art">
+          <div className="art-card card-back">CREATE.</div>
+          <div className="art-card card-front">
+            <div className="art-icon">A.</div>
+            <div className="art-caption">YOUR NEXT IDEA</div>
+            <div className="art-line" />
+            <div className="art-small">MAKE IT REAL.</div>
+          </div>
+          <div className="art-orbit" />
+        </div>
       </section>
 
-      <section id="products" style={styles.collection}>
-        <p style={{ color: "#7955df", fontWeight: 700 }}>
-          THE COLLECTION
-        </p>
+      <section className="trust-strip">
+        <span>INDEPENDENTLY CREATED</span>
+        <span>✦</span>
+        <span>DIGITAL FIRST</span>
+        <span>✦</span>
+        <span>MADE FOR YOU</span>
+      </section>
 
-        <h2>Explore our products.</h2>
-        <p>Find something useful for your next idea.</p>
+      <section className="products-section" id="products">
+        <div className="section-heading">
+          <div>
+            <div className="eyebrow">THE COLLECTION</div>
+            <h2>Explore our products<span>.</span></h2>
+            <p>Find something useful for your next big idea.</p>
+          </div>
+          <div className="product-count">
+            {products.length} PRODUCTS
+          </div>
+        </div>
 
-        <input
-          style={styles.search}
-          placeholder="Search products..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="filters">
+          <input
+            type="search"
+            placeholder="Search products..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
 
-        <div style={styles.categories}>
-          {categories.map((item) => (
-            <button
-              key={item}
-              onClick={() => setCategory(item)}
-              style={{
-                ...styles.category,
-                background: category === item ? "#eee8ff" : "white"
-              }}
-            >
-              {item}
-            </button>
-          ))}
+          <div className="category-list">
+            {categories.map((item) => (
+              <button
+                key={item}
+                className={category === item ? "active" : ""}
+                onClick={() => setCategory(item)}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
         </div>
 
         {loading ? (
-          <p>Loading products...</p>
+          <div className="empty-state">Loading products...</div>
+        ) : filtered.length === 0 ? (
+          <div className="empty-state">
+            <div className="empty-icon">✳</div>
+            <h3>No products found</h3>
+            <p>New creations will appear here soon.</p>
+          </div>
         ) : (
-          <div style={styles.grid}>
-            {filteredProducts.map((product) => (
-              <article key={product.id} style={styles.product}>
-                <div style={styles.productImage}>
+          <div className="product-grid">
+            {filtered.map((product) => (
+              <article className="product-card" key={product.id}>
+                <div className="product-image">
                   {product.image ? (
-                    <img
-                      src={product.image}
-                      alt={product.title}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover"
-                      }}
-                    />
+                    <img src={product.image} alt={product.title} />
                   ) : (
-                    <span>✦</span>
+                    <div className="image-placeholder">A.</div>
+                  )}
+                  {product.featured && (
+                    <span className="featured">FEATURED</span>
                   )}
                 </div>
 
-                <div style={{ padding: 16 }}>
-                  <small>{product.category}</small>
+                <div className="product-info">
+                  <span className="product-category">
+                    {product.category}
+                  </span>
                   <h3>{product.title}</h3>
                   <p>{product.description}</p>
 
-                  <strong>
-                    {product.price === 0 ? "Free" : `₹${product.price}`}
-                  </strong>
+                  <div className="product-bottom">
+                    <div className="price">
+                      ₹{product.price}
+                      {product.oldPrice && (
+                        <del>₹{product.oldPrice}</del>
+                      )}
+                    </div>
 
-                  <button
-                    style={styles.addButton}
-                    onClick={() => setCart([...cart, product])}
-                  >
-                    Add +
-                  </button>
+                    {product.downloadUrl ? (
+                      <a
+                        className="product-action"
+                        href={product.downloadUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Get Product ↗
+                      </a>
+                    ) : (
+                      <span className="product-action unavailable">
+                        Coming Soon
+                      </span>
+                    )}
+                  </div>
                 </div>
               </article>
             ))}
           </div>
         )}
-
-        {!loading && filteredProducts.length === 0 && (
-          <p>No products found. Add products from Admin Dashboard.</p>
-        )}
       </section>
 
-      <section id="about" style={styles.about}>
-        <h2>Ideas into Products.</h2>
-        <p>Useful digital products. Simple experience.</p>
+      <section className="about-section" id="about">
+        <div className="about-mark">A.</div>
+        <div>
+          <div className="eyebrow">ABOUT ANSU CREATE</div>
+          <h2>Small ideas.<br />Meaningful creations.</h2>
+          <p>
+            ANSU CREATE is an independent digital brand focused
+            on creating useful apps, resources and digital products.
+            Our goal is simple: turn ideas into something real.
+          </p>
+        </div>
       </section>
 
-      <footer style={styles.footer}>
-        © 2026 ANSU CREATE. All rights reserved.
+      <footer>
+        <a className="brand" href="#">ANSU<span>CREATE.</span></a>
+        <p>Ideas into Products.</p>
+        <small>© {new Date().getFullYear()} ANSU CREATE. All rights reserved.</small>
       </footer>
-
-      <div style={styles.cart}>
-        <strong>Your cart ({cart.length})</strong>
-        <span>
-          Total: ₹{cart.reduce((sum, item) => sum + item.price, 0)}
-        </span>
-        <button
-          style={styles.primaryButton}
-          onClick={() =>
-            alert("Checkout is not connected yet.")
-          }
-        >
-          Continue →
-        </button>
-      </div>
     </main>
   );
 }
 
-const styles: Record<string, React.CSSProperties> = {
-  nav: {
-    padding: "18px 5%",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderBottom: "1px solid #eee",
-    flexWrap: "wrap",
-    gap: 15
-  },
-  hero: {
-    padding: "100px 8%",
-    background: "#faf9ff",
-    minHeight: 320
-  },
-  collection: {
-    padding: "65px 8%",
-    minHeight: 450
-  },
-  search: {
-    width: "100%",
-    maxWidth: 450,
-    padding: 15,
-    border: "1px solid #ddd",
-    borderRadius: 10,
-    marginTop: 20
-  },
-  categories: {
-    display: "flex",
-    gap: 10,
-    flexWrap: "wrap",
-    margin: "18px 0 30px"
-  },
-  category: {
-    border: "1px solid #eee",
-    borderRadius: 20,
-    padding: "9px 15px"
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-    gap: 20
-  },
-  product: {
-    border: "1px solid #eee",
-    borderRadius: 15,
-    overflow: "hidden"
-  },
-  productImage: {
-    height: 160,
-    background: "#e9e2ff",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: 45,
-    color: "#7955df"
-  },
-  addButton: {
-    float: "right",
-    border: 0,
-    background: "#eee8ff",
-    color: "#6845c8",
-    padding: "9px 14px",
-    borderRadius: 8
-  },
-  primaryButton: {
-    display: "inline-block",
-    background: "#7955df",
-    color: "white",
-    padding: "13px 20px",
-    borderRadius: 9,
-    textDecoration: "none",
-    border: 0
-  },
-  adminButton: {
-    border: 0,
-    background: "#eee8ff",
-    padding: "9px 14px",
-    borderRadius: 8
-  },
-  about: {
-    padding: 60,
-    textAlign: "center",
-    background: "#f8f6ff"
-  },
-  footer: {
-    padding: 30,
-    textAlign: "center"
-  },
-  cart: {
-    position: "sticky",
-    bottom: 0,
-    background: "white",
-    padding: 15,
-    borderTop: "1px solid #eee",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: 10,
-    flexWrap: "wrap"
-  }
+const backButton: React.CSSProperties = {
+  margin: 16,
+  padding: "10px 18px",
+  border: "1px solid #ddd",
+  borderRadius: 10,
+  background: "white",
+  cursor: "pointer"
 };
