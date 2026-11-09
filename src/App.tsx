@@ -13,49 +13,70 @@ import {
   ArrowRight,
   ArrowUpRight,
   Search,
-  Menu,
-  X,
   Sparkles,
   Layers3,
   Download,
-  ChevronRight
+  Home,
+  Compass,
+  ShoppingBag,
+  UserRound,
+  ShieldCheck
 } from "lucide-react";
 import AdminPanel from "./AdminPanel";
 import { getProducts, type Product } from "./products";
 
 function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const closeMenu = () => setMenuOpen(false);
-
   return (
     <header className="site-header">
       <div className="header-inner">
-        <Link to="/" className="logo" onClick={closeMenu}>
+        <Link to="/" className="logo">
           ANSU<span>CREATE.</span>
         </Link>
 
-        <nav className={menuOpen ? "nav-links open" : "nav-links"}>
-          <NavLink to="/" end onClick={closeMenu}>Home</NavLink>
-          <NavLink to="/explore" onClick={closeMenu}>Explore</NavLink>
-          <NavLink to="/shop" onClick={closeMenu}>Shop</NavLink>
-          <NavLink to="/about" onClick={closeMenu}>About</NavLink>
+        <nav className="nav-links">
+          <NavLink to="/" end>Home</NavLink>
+          <NavLink to="/explore">Explore</NavLink>
+          <NavLink to="/shop">Shop</NavLink>
+          <NavLink to="/about">About</NavLink>
         </nav>
 
         <div className="header-actions">
+          <Link to="/admin" className="header-admin">
+            <ShieldCheck size={15} />
+            Admin
+          </Link>
           <Link to="/shop" className="header-shop">
             Shop Now <ArrowUpRight size={15} />
           </Link>
-          <button
-            className="menu-toggle"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            {menuOpen ? <X /> : <Menu />}
-          </button>
         </div>
       </div>
     </header>
+  );
+}
+
+function BottomNavigation() {
+  return (
+    <nav className="bottom-nav" aria-label="Main navigation">
+      <NavLink to="/" end>
+        <Home size={21} />
+        <span>Home</span>
+      </NavLink>
+
+      <NavLink to="/explore">
+        <Compass size={21} />
+        <span>Explore</span>
+      </NavLink>
+
+      <NavLink to="/shop">
+        <ShoppingBag size={21} />
+        <span>Shop</span>
+      </NavLink>
+
+      <NavLink to="/profile">
+        <UserRound size={21} />
+        <span>Profile</span>
+      </NavLink>
+    </nav>
   );
 }
 
@@ -75,9 +96,11 @@ function Footer() {
           <Link to="/explore">Explore</Link>
           <Link to="/shop">Shop</Link>
           <Link to="/about">About</Link>
+          <Link to="/profile">Profile</Link>
           <Link to="/admin">Admin</Link>
         </div>
       </div>
+
       <div className="footer-bottom">
         <span>© {new Date().getFullYear()} ANSU CREATE</span>
         <span>Made with ideas. Built with purpose.</span>
@@ -88,19 +111,18 @@ function Footer() {
 
 function ProductCard({ product }: { product: Product }) {
   return (
-    <Link
-      to={`/product/${product.id}`}
-      className="product-card"
-    >
+    <Link to={`/product/${product.id}`} className="product-card">
       <div className="product-image">
         {product.image ? (
           <img src={product.image} alt={product.title} />
         ) : (
           <div className="product-placeholder">A.</div>
         )}
+
         {product.featured && (
           <span className="featured-label">FEATURED</span>
         )}
+
         <span className="product-arrow">
           <ArrowUpRight size={19} />
         </span>
@@ -109,9 +131,12 @@ function ProductCard({ product }: { product: Product }) {
       <div className="product-card-info">
         <span className="product-category">{product.category}</span>
         <h3>{product.title}</h3>
+
         <div className="product-card-bottom">
           <span className="product-price">₹{product.price}</span>
-          <span className="view-product">View Product <ArrowRight size={14} /></span>
+          <span className="view-product">
+            View Product <ArrowRight size={14} />
+          </span>
         </div>
       </div>
     </Link>
@@ -154,17 +179,21 @@ function HomePage({ products }: { products: Product[] }) {
       <section className="home-hero">
         <div className="hero-copy">
           <div className="eyebrow">
-            <span className="eyebrow-dot" /> A WORLD OF DIGITAL CREATIONS
+            <span className="eyebrow-dot" />
+            A WORLD OF DIGITAL CREATIONS
           </div>
+
           <h1>
             Ideas deserve
             <br />
             to become <span>real.</span>
           </h1>
+
           <p>
             Discover thoughtfully created digital products,
             useful apps and resources made to inspire your next step.
           </p>
+
           <div className="hero-buttons">
             <Link to="/shop" className="primary-button">
               Explore the shop <ArrowUpRight size={17} />
@@ -173,8 +202,10 @@ function HomePage({ products }: { products: Product[] }) {
               Our story
             </Link>
           </div>
+
           <div className="hero-note">
-            <Sparkles size={15} /> Independent digital creations.
+            <Sparkles size={15} />
+            Independent digital creations.
           </div>
         </div>
 
@@ -182,17 +213,21 @@ function HomePage({ products }: { products: Product[] }) {
           <div className="visual-glow" />
           <div className="visual-orbit orbit-one" />
           <div className="visual-orbit orbit-two" />
+
           <div className="visual-card">
             <div className="visual-card-top">
               <span>ANSU CREATE</span>
               <Sparkles size={17} />
             </div>
+
             <div className="visual-letter">A.</div>
+
             <div className="visual-card-bottom">
               <span>IDEAS INTO PRODUCTS.</span>
               <span>EST. 2026</span>
             </div>
           </div>
+
           <div className="floating-tag tag-one">Digital ideas ✦</div>
           <div className="floating-tag tag-two">Made to create.</div>
         </div>
@@ -213,12 +248,16 @@ function HomePage({ products }: { products: Product[] }) {
             <h2>Featured creations<span>.</span></h2>
             <p>A closer look at some of our latest digital products.</p>
           </div>
+
           <Link to="/shop" className="text-link">
             View all products <ArrowUpRight size={16} />
           </Link>
         </div>
 
-        <ProductGrid products={featured.length ? featured : products} limit={3} />
+        <ProductGrid
+          products={featured.length ? featured : products}
+          limit={3}
+        />
       </section>
 
       <section className="discover-banner">
@@ -226,10 +265,12 @@ function HomePage({ products }: { products: Product[] }) {
           <span className="section-kicker">YOUR NEXT DISCOVERY</span>
           <h2>Find something<br />worth creating with.</h2>
           <p>Explore the collection and discover your next useful tool.</p>
+
           <Link to="/explore" className="primary-button">
             Start exploring <ArrowRight size={16} />
           </Link>
         </div>
+
         <div className="banner-symbol">A.</div>
       </section>
     </>
@@ -256,11 +297,17 @@ function ExplorePage({ products }: { products: Product[] }) {
             to={`/shop?category=${encodeURIComponent(category)}`}
             className="explore-category"
           >
-            <div className="category-symbol"><Layers3 size={23} /></div>
+            <div className="category-symbol">
+              <Layers3 size={23} />
+            </div>
+
             <div>
               <h3>{category}</h3>
-              <p>Explore collection <ArrowRight size={14} /></p>
+              <p>
+                Explore collection <ArrowRight size={14} />
+              </p>
             </div>
+
             <ArrowUpRight className="category-arrow" size={20} />
           </Link>
         ))}
@@ -271,10 +318,12 @@ function ExplorePage({ products }: { products: Product[] }) {
           <span className="section-kicker">THE COLLECTION</span>
           <h2>Latest creations<span>.</span></h2>
         </div>
+
         <Link to="/shop" className="text-link">
           Visit shop <ArrowRight size={15} />
         </Link>
       </div>
+
       <ProductGrid products={products} limit={3} />
     </main>
   );
@@ -283,6 +332,7 @@ function ExplorePage({ products }: { products: Product[] }) {
 function ShopPage({ products }: { products: Product[] }) {
   const params = new URLSearchParams(window.location.search);
   const initialCategory = params.get("category") || "All";
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(initialCategory);
 
@@ -319,6 +369,7 @@ function ShopPage({ products }: { products: Product[] }) {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
+
         <span className="result-count">
           {filtered.length} PRODUCTS
         </span>
@@ -351,7 +402,9 @@ function ProductPage({ products }: { products: Product[] }) {
       <main className="page-container not-found">
         <h1>Product not found.</h1>
         <p>This product may have been removed or is unavailable.</p>
-        <Link to="/shop" className="primary-button">Back to shop</Link>
+        <Link to="/shop" className="primary-button">
+          Back to shop
+        </Link>
       </main>
     );
   }
@@ -361,6 +414,7 @@ function ProductPage({ products }: { products: Product[] }) {
       <button className="back-link" onClick={() => navigate(-1)}>
         ← Back
       </button>
+
       <div className="product-detail-grid">
         <div className="detail-image">
           {product.image ? (
@@ -369,6 +423,7 @@ function ProductPage({ products }: { products: Product[] }) {
             <div className="product-placeholder">A.</div>
           )}
         </div>
+
         <div className="detail-copy">
           <span className="section-kicker">{product.category}</span>
           <h1>{product.title}</h1>
@@ -382,7 +437,8 @@ function ProductPage({ products }: { products: Product[] }) {
               target="_blank"
               rel="noreferrer"
             >
-              <Download size={17} /> Get product <ArrowUpRight size={16} />
+              <Download size={17} />
+              Get product <ArrowUpRight size={16} />
             </a>
           ) : (
             <button className="primary-button disabled-button" disabled>
@@ -400,6 +456,41 @@ function ProductPage({ products }: { products: Product[] }) {
   );
 }
 
+function ProfilePage() {
+  return (
+    <main className="page-container profile-page">
+      <div className="page-heading">
+        <span className="section-kicker">YOUR ANSU CREATE ACCOUNT</span>
+        <h1>My Profile<span>.</span></h1>
+        <p>
+          Your personal space for account details and digital purchases.
+        </p>
+      </div>
+
+      <section className="profile-card">
+        <div className="profile-icon">
+          <UserRound size={34} />
+        </div>
+
+        <span className="section-kicker">CUSTOMER ACCOUNT</span>
+        <h2>Welcome to ANSU CREATE.</h2>
+        <p>
+          Customer account features, order history and purchased
+          downloads will be available here.
+        </p>
+
+        <Link to="/shop" className="primary-button">
+          Explore products <ArrowRight size={16} />
+        </Link>
+
+        <p className="profile-help">
+          Need help? <Link to="/contact">Contact support</Link>
+        </p>
+      </section>
+    </main>
+  );
+}
+
 function AboutPage() {
   return (
     <main className="page-container about-page">
@@ -411,15 +502,18 @@ function AboutPage() {
 
       <div className="about-story">
         <div className="about-monogram">A.</div>
+
         <div>
           <span className="section-kicker">OUR PURPOSE</span>
           <h2>Creating with curiosity.<br />Building with purpose.</h2>
+
           <p>
             ANSU CREATE is an independent digital brand focused on
             apps, digital resources and useful products. We want to
             turn simple ideas into practical creations that make
             everyday experiences better.
           </p>
+
           <p>
             Every product starts with one thought: how can we make
             something useful, simple and meaningful?
@@ -428,9 +522,23 @@ function AboutPage() {
       </div>
 
       <div className="about-values">
-        <div><span>01</span><h3>Keep it simple.</h3><p>Useful experiences without unnecessary complexity.</p></div>
-        <div><span>02</span><h3>Think creatively.</h3><p>Explore ideas and turn them into real creations.</p></div>
-        <div><span>03</span><h3>Build with purpose.</h3><p>Make products that offer genuine value.</p></div>
+        <div>
+          <span>01</span>
+          <h3>Keep it simple.</h3>
+          <p>Useful experiences without unnecessary complexity.</p>
+        </div>
+
+        <div>
+          <span>02</span>
+          <h3>Think creatively.</h3>
+          <p>Explore ideas and turn them into real creations.</p>
+        </div>
+
+        <div>
+          <span>03</span>
+          <h3>Build with purpose.</h3>
+          <p>Make products that offer genuine value.</p>
+        </div>
       </div>
 
       <div className="about-cta">
@@ -447,6 +555,15 @@ function AdminRoute() {
   return <AdminPanel />;
 }
 
+function NotFoundPage() {
+  return (
+    <main className="page-container not-found">
+      <h1>Page not found.</h1>
+      <Link to="/" className="primary-button">Go home</Link>
+    </main>
+  );
+}
+
 function Site() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -461,6 +578,7 @@ function Site() {
   return (
     <>
       <Header />
+
       {loading ? (
         <div className="loading-screen">Loading ANSU CREATE...</div>
       ) : (
@@ -468,13 +586,16 @@ function Site() {
           <Route path="/" element={<HomePage products={products} />} />
           <Route path="/explore" element={<ExplorePage products={products} />} />
           <Route path="/shop" element={<ShopPage products={products} />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/product/:id" element={<ProductPage products={products} />} />
           <Route path="/admin" element={<AdminRoute />} />
-          <Route path="*" element={<main className="page-container not-found"><h1>Page not found.</h1><Link to="/" className="primary-button">Go home</Link></main>} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       )}
+
       <Footer />
+      <BottomNavigation />
     </>
   );
 }
