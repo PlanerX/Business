@@ -1,242 +1,488 @@
 
 import { useEffect, useState } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  NavLink,
+  useParams,
+  useNavigate
+} from "react-router-dom";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Search,
+  Menu,
+  X,
+  Sparkles,
+  Layers3,
+  Download,
+  ChevronRight
+} from "lucide-react";
 import AdminPanel from "./AdminPanel";
 import { getProducts, type Product } from "./products";
 
-export default function App() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("All");
-  const [adminOpen, setAdminOpen] = useState(false);
+function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  async function loadProducts() {
-    try {
-      const data = await getProducts();
-      setProducts(data);
-    } catch (error) {
-      console.error("Products loading failed:", error);
-    } finally {
-      setLoading(false);
-    }
+  const closeMenu = () => setMenuOpen(false);
+
+  return (
+    <header className="site-header">
+      <div className="header-inner">
+        <Link to="/" className="logo" onClick={closeMenu}>
+          ANSU<span>CREATE.</span>
+        </Link>
+
+        <nav className={menuOpen ? "nav-links open" : "nav-links"}>
+          <NavLink to="/" end onClick={closeMenu}>Home</NavLink>
+          <NavLink to="/explore" onClick={closeMenu}>Explore</NavLink>
+          <NavLink to="/shop" onClick={closeMenu}>Shop</NavLink>
+          <NavLink to="/about" onClick={closeMenu}>About</NavLink>
+        </nav>
+
+        <div className="header-actions">
+          <Link to="/shop" className="header-shop">
+            Shop Now <ArrowUpRight size={15} />
+          </Link>
+          <button
+            className="menu-toggle"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="site-footer">
+      <div className="footer-main">
+        <div>
+          <Link to="/" className="logo">
+            ANSU<span>CREATE.</span>
+          </Link>
+          <p>Ideas into Products.</p>
+        </div>
+
+        <div className="footer-links">
+          <Link to="/">Home</Link>
+          <Link to="/explore">Explore</Link>
+          <Link to="/shop">Shop</Link>
+          <Link to="/about">About</Link>
+          <Link to="/admin">Admin</Link>
+        </div>
+      </div>
+      <div className="footer-bottom">
+        <span>© {new Date().getFullYear()} ANSU CREATE</span>
+        <span>Made with ideas. Built with purpose.</span>
+      </div>
+    </footer>
+  );
+}
+
+function ProductCard({ product }: { product: Product }) {
+  return (
+    <Link
+      to={`/product/${product.id}`}
+      className="product-card"
+    >
+      <div className="product-image">
+        {product.image ? (
+          <img src={product.image} alt={product.title} />
+        ) : (
+          <div className="product-placeholder">A.</div>
+        )}
+        {product.featured && (
+          <span className="featured-label">FEATURED</span>
+        )}
+        <span className="product-arrow">
+          <ArrowUpRight size={19} />
+        </span>
+      </div>
+
+      <div className="product-card-info">
+        <span className="product-category">{product.category}</span>
+        <h3>{product.title}</h3>
+        <div className="product-card-bottom">
+          <span className="product-price">₹{product.price}</span>
+          <span className="view-product">View Product <ArrowRight size={14} /></span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function ProductGrid({
+  products,
+  limit
+}: {
+  products: Product[];
+  limit?: number;
+}) {
+  const visible = limit ? products.slice(0, limit) : products;
+
+  if (!visible.length) {
+    return (
+      <div className="empty-products">
+        <Sparkles size={30} />
+        <h3>Something new is coming.</h3>
+        <p>Our collection is being prepared. Check back soon.</p>
+      </div>
+    );
   }
 
-  useEffect(() => {
-    loadProducts();
-  }, []);
+  return (
+    <div className="product-grid">
+      {visible.map((product) => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
+  );
+}
+
+function HomePage({ products }: { products: Product[] }) {
+  const featured = products.filter((p) => p.featured);
+
+  return (
+    <>
+      <section className="home-hero">
+        <div className="hero-copy">
+          <div className="eyebrow">
+            <span className="eyebrow-dot" /> A WORLD OF DIGITAL CREATIONS
+          </div>
+          <h1>
+            Ideas deserve
+            <br />
+            to become <span>real.</span>
+          </h1>
+          <p>
+            Discover thoughtfully created digital products,
+            useful apps and resources made to inspire your next step.
+          </p>
+          <div className="hero-buttons">
+            <Link to="/shop" className="primary-button">
+              Explore the shop <ArrowUpRight size={17} />
+            </Link>
+            <Link to="/about" className="secondary-button">
+              Our story
+            </Link>
+          </div>
+          <div className="hero-note">
+            <Sparkles size={15} /> Independent digital creations.
+          </div>
+        </div>
+
+        <div className="hero-visual">
+          <div className="visual-glow" />
+          <div className="visual-orbit orbit-one" />
+          <div className="visual-orbit orbit-two" />
+          <div className="visual-card">
+            <div className="visual-card-top">
+              <span>ANSU CREATE</span>
+              <Sparkles size={17} />
+            </div>
+            <div className="visual-letter">A.</div>
+            <div className="visual-card-bottom">
+              <span>IDEAS INTO PRODUCTS.</span>
+              <span>EST. 2026</span>
+            </div>
+          </div>
+          <div className="floating-tag tag-one">Digital ideas ✦</div>
+          <div className="floating-tag tag-two">Made to create.</div>
+        </div>
+      </section>
+
+      <section className="intro-strip">
+        <span>DESIGNED WITH PURPOSE</span>
+        <span>✳</span>
+        <span>MADE FOR EVERYDAY</span>
+        <span>✳</span>
+        <span>IDEAS INTO PRODUCTS</span>
+      </section>
+
+      <section className="content-section">
+        <div className="section-top">
+          <div>
+            <span className="section-kicker">HANDPICKED FOR YOU</span>
+            <h2>Featured creations<span>.</span></h2>
+            <p>A closer look at some of our latest digital products.</p>
+          </div>
+          <Link to="/shop" className="text-link">
+            View all products <ArrowUpRight size={16} />
+          </Link>
+        </div>
+
+        <ProductGrid products={featured.length ? featured : products} limit={3} />
+      </section>
+
+      <section className="discover-banner">
+        <div>
+          <span className="section-kicker">YOUR NEXT DISCOVERY</span>
+          <h2>Find something<br />worth creating with.</h2>
+          <p>Explore the collection and discover your next useful tool.</p>
+          <Link to="/explore" className="primary-button">
+            Start exploring <ArrowRight size={16} />
+          </Link>
+        </div>
+        <div className="banner-symbol">A.</div>
+      </section>
+    </>
+  );
+}
+
+function ExplorePage({ products }: { products: Product[] }) {
+  const categories = Array.from(
+    new Set(products.map((p) => p.category))
+  );
+
+  return (
+    <main className="page-container">
+      <div className="page-heading">
+        <span className="section-kicker">DISCOVER SOMETHING NEW</span>
+        <h1>Explore<span>.</span></h1>
+        <p>Ideas, tools and creations for curious minds.</p>
+      </div>
+
+      <div className="explore-category-grid">
+        {categories.map((category) => (
+          <Link
+            key={category}
+            to={`/shop?category=${encodeURIComponent(category)}`}
+            className="explore-category"
+          >
+            <div className="category-symbol"><Layers3 size={23} /></div>
+            <div>
+              <h3>{category}</h3>
+              <p>Explore collection <ArrowRight size={14} /></p>
+            </div>
+            <ArrowUpRight className="category-arrow" size={20} />
+          </Link>
+        ))}
+      </div>
+
+      <div className="section-top explore-products-heading">
+        <div>
+          <span className="section-kicker">THE COLLECTION</span>
+          <h2>Latest creations<span>.</span></h2>
+        </div>
+        <Link to="/shop" className="text-link">
+          Visit shop <ArrowRight size={15} />
+        </Link>
+      </div>
+      <ProductGrid products={products} limit={3} />
+    </main>
+  );
+}
+
+function ShopPage({ products }: { products: Product[] }) {
+  const params = new URLSearchParams(window.location.search);
+  const initialCategory = params.get("category") || "All";
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState(initialCategory);
 
   const categories = [
     "All",
     ...Array.from(new Set(products.map((p) => p.category)))
   ];
 
-  const filtered = products.filter((p) => {
+  const filtered = products.filter((product) => {
     const matchesSearch =
-      p.title.toLowerCase().includes(search.toLowerCase()) ||
-      p.description.toLowerCase().includes(search.toLowerCase());
+      product.title.toLowerCase().includes(search.toLowerCase()) ||
+      product.description.toLowerCase().includes(search.toLowerCase());
 
     const matchesCategory =
-      category === "All" || p.category === category;
+      category === "All" || product.category === category;
 
     return matchesSearch && matchesCategory;
   });
 
-  if (adminOpen) {
-    return (
-      <div>
-        <button
-          onClick={() => setAdminOpen(false)}
-          style={backButton}
-        >
-          ← Back to Store
-        </button>
-        <AdminPanel />
-      </div>
-    );
-  }
-
   return (
-    <main>
-      <nav className="navbar">
-        <a className="brand" href="#">
-          ANSU<span>CREATE.</span>
-        </a>
+    <main className="page-container">
+      <div className="page-heading">
+        <span className="section-kicker">THE ANSU CREATE STORE</span>
+        <h1>Shop<span>.</span></h1>
+        <p>Browse our collection of digital products and useful creations.</p>
+      </div>
 
-        <div className="nav-links">
-          <a href="#products">Explore</a>
-          <a href="#about">About</a>
-          <button
-            className="admin-button"
-            onClick={() => setAdminOpen(true)}
-          >
-            Admin Login
-          </button>
-        </div>
-      </nav>
-
-      <section className="hero">
-        <div className="hero-content">
-          <div className="eyebrow">
-            <span className="dot" />
-            DIGITAL PRODUCTS · BUILT WITH IDEAS
-          </div>
-
-          <h1>
-            Ideas into
-            <br />
-            <span>Products.</span>
-          </h1>
-
-          <p>
-            Discover useful apps, digital tools and resources
-            designed to make your everyday life better.
-          </p>
-
-          <a className="hero-cta" href="#products">
-            Explore Products <span>↗</span>
-          </a>
-        </div>
-
-        <div className="hero-art">
-          <div className="art-card card-back">CREATE.</div>
-          <div className="art-card card-front">
-            <div className="art-icon">A.</div>
-            <div className="art-caption">YOUR NEXT IDEA</div>
-            <div className="art-line" />
-            <div className="art-small">MAKE IT REAL.</div>
-          </div>
-          <div className="art-orbit" />
-        </div>
-      </section>
-
-      <section className="trust-strip">
-        <span>INDEPENDENTLY CREATED</span>
-        <span>✦</span>
-        <span>DIGITAL FIRST</span>
-        <span>✦</span>
-        <span>MADE FOR YOU</span>
-      </section>
-
-      <section className="products-section" id="products">
-        <div className="section-heading">
-          <div>
-            <div className="eyebrow">THE COLLECTION</div>
-            <h2>Explore our products<span>.</span></h2>
-            <p>Find something useful for your next big idea.</p>
-          </div>
-          <div className="product-count">
-            {products.length} PRODUCTS
-          </div>
-        </div>
-
-        <div className="filters">
+      <div className="shop-toolbar">
+        <div className="shop-search">
+          <Search size={17} />
           <input
-            type="search"
             placeholder="Search products..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-
-          <div className="category-list">
-            {categories.map((item) => (
-              <button
-                key={item}
-                className={category === item ? "active" : ""}
-                onClick={() => setCategory(item)}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
         </div>
+        <span className="result-count">
+          {filtered.length} PRODUCTS
+        </span>
+      </div>
 
-        {loading ? (
-          <div className="empty-state">Loading products...</div>
-        ) : filtered.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-icon">✳</div>
-            <h3>No products found</h3>
-            <p>New creations will appear here soon.</p>
-          </div>
-        ) : (
-          <div className="product-grid">
-            {filtered.map((product) => (
-              <article className="product-card" key={product.id}>
-                <div className="product-image">
-                  {product.image ? (
-                    <img src={product.image} alt={product.title} />
-                  ) : (
-                    <div className="image-placeholder">A.</div>
-                  )}
-                  {product.featured && (
-                    <span className="featured">FEATURED</span>
-                  )}
-                </div>
+      <div className="shop-categories">
+        {categories.map((item) => (
+          <button
+            key={item}
+            className={category === item ? "selected" : ""}
+            onClick={() => setCategory(item)}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
 
-                <div className="product-info">
-                  <span className="product-category">
-                    {product.category}
-                  </span>
-                  <h3>{product.title}</h3>
-                  <p>{product.description}</p>
-
-                  <div className="product-bottom">
-                    <div className="price">
-                      ₹{product.price}
-                      {product.oldPrice && (
-                        <del>₹{product.oldPrice}</del>
-                      )}
-                    </div>
-
-                    {product.downloadUrl ? (
-                      <a
-                        className="product-action"
-                        href={product.downloadUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Get Product ↗
-                      </a>
-                    ) : (
-                      <span className="product-action unavailable">
-                        Coming Soon
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
-      </section>
-
-      <section className="about-section" id="about">
-        <div className="about-mark">A.</div>
-        <div>
-          <div className="eyebrow">ABOUT ANSU CREATE</div>
-          <h2>Small ideas.<br />Meaningful creations.</h2>
-          <p>
-            ANSU CREATE is an independent digital brand focused
-            on creating useful apps, resources and digital products.
-            Our goal is simple: turn ideas into something real.
-          </p>
-        </div>
-      </section>
-
-      <footer>
-        <a className="brand" href="#">ANSU<span>CREATE.</span></a>
-        <p>Ideas into Products.</p>
-        <small>© {new Date().getFullYear()} ANSU CREATE. All rights reserved.</small>
-      </footer>
+      <ProductGrid products={filtered} />
     </main>
   );
 }
 
-const backButton: React.CSSProperties = {
-  margin: 16,
-  padding: "10px 18px",
-  border: "1px solid #ddd",
-  borderRadius: 10,
-  background: "white",
-  cursor: "pointer"
-};
+function ProductPage({ products }: { products: Product[] }) {
+  const { id } = useParams();
+  const product = products.find((item) => item.id === id);
+  const navigate = useNavigate();
+
+  if (!product) {
+    return (
+      <main className="page-container not-found">
+        <h1>Product not found.</h1>
+        <p>This product may have been removed or is unavailable.</p>
+        <Link to="/shop" className="primary-button">Back to shop</Link>
+      </main>
+    );
+  }
+
+  return (
+    <main className="page-container product-detail">
+      <button className="back-link" onClick={() => navigate(-1)}>
+        ← Back
+      </button>
+      <div className="product-detail-grid">
+        <div className="detail-image">
+          {product.image ? (
+            <img src={product.image} alt={product.title} />
+          ) : (
+            <div className="product-placeholder">A.</div>
+          )}
+        </div>
+        <div className="detail-copy">
+          <span className="section-kicker">{product.category}</span>
+          <h1>{product.title}</h1>
+          <div className="detail-price">₹{product.price}</div>
+          <p>{product.description}</p>
+
+          {product.downloadUrl ? (
+            <a
+              className="primary-button"
+              href={product.downloadUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Download size={17} /> Get product <ArrowUpRight size={16} />
+            </a>
+          ) : (
+            <button className="primary-button disabled-button" disabled>
+              Coming soon
+            </button>
+          )}
+
+          <div className="detail-note">
+            <Sparkles size={16} />
+            A digital creation from ANSU CREATE.
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function AboutPage() {
+  return (
+    <main className="page-container about-page">
+      <div className="page-heading">
+        <span className="section-kicker">A LITTLE ABOUT US</span>
+        <h1>Ideas into<br /><span>Products.</span></h1>
+        <p>We believe good ideas deserve to become something useful.</p>
+      </div>
+
+      <div className="about-story">
+        <div className="about-monogram">A.</div>
+        <div>
+          <span className="section-kicker">OUR PURPOSE</span>
+          <h2>Creating with curiosity.<br />Building with purpose.</h2>
+          <p>
+            ANSU CREATE is an independent digital brand focused on
+            apps, digital resources and useful products. We want to
+            turn simple ideas into practical creations that make
+            everyday experiences better.
+          </p>
+          <p>
+            Every product starts with one thought: how can we make
+            something useful, simple and meaningful?
+          </p>
+        </div>
+      </div>
+
+      <div className="about-values">
+        <div><span>01</span><h3>Keep it simple.</h3><p>Useful experiences without unnecessary complexity.</p></div>
+        <div><span>02</span><h3>Think creatively.</h3><p>Explore ideas and turn them into real creations.</p></div>
+        <div><span>03</span><h3>Build with purpose.</h3><p>Make products that offer genuine value.</p></div>
+      </div>
+
+      <div className="about-cta">
+        <h2>Discover what we create.</h2>
+        <Link to="/shop" className="primary-button">
+          Explore the shop <ArrowRight size={16} />
+        </Link>
+      </div>
+    </main>
+  );
+}
+
+function AdminRoute() {
+  return <AdminPanel />;
+}
+
+function Site() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getProducts()
+      .then(setProducts)
+      .catch((error) => console.error("Products loading failed:", error))
+      .finally(() => setLoading(false));
+  }, []);
+
+  return (
+    <>
+      <Header />
+      {loading ? (
+        <div className="loading-screen">Loading ANSU CREATE...</div>
+      ) : (
+        <Routes>
+          <Route path="/" element={<HomePage products={products} />} />
+          <Route path="/explore" element={<ExplorePage products={products} />} />
+          <Route path="/shop" element={<ShopPage products={products} />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/product/:id" element={<ProductPage products={products} />} />
+          <Route path="/admin" element={<AdminRoute />} />
+          <Route path="*" element={<main className="page-container not-found"><h1>Page not found.</h1><Link to="/" className="primary-button">Go home</Link></main>} />
+        </Routes>
+      )}
+      <Footer />
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Site />
+    </BrowserRouter>
+  );
+}
