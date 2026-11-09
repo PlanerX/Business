@@ -431,6 +431,22 @@ function ProductPage({ products }: { products: Product[] }) {
     );
   }
 
+  const whatsappNumber = "918538909232";
+
+  const whatsappMessage = `Hello ANSU CREATE!
+
+I want to buy this product:
+
+Product: ${product.title}
+Price: ₹${product.price}
+
+Please share the purchase details.`;
+
+  const whatsappLink =
+    `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+
+  const isFree = Number(product.price) <= 0;
+
   return (
     <main className="page-container product-detail">
       <button className="back-link" onClick={() => navigate(-1)}>
@@ -448,24 +464,42 @@ function ProductPage({ products }: { products: Product[] }) {
 
         <div className="detail-copy">
           <span className="section-kicker">{product.category}</span>
+
           <h1>{product.title}</h1>
+
           <div className="detail-price">₹{product.price}</div>
+
           <p>{product.description}</p>
 
-          {product.downloadUrl ? (
+          {isFree ? (
+            product.downloadUrl ? (
+              <a
+                className="primary-button"
+                href={product.downloadUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Download size={17} />
+                Download Now <ArrowUpRight size={16} />
+              </a>
+            ) : (
+              <button
+                className="primary-button disabled-button"
+                disabled
+              >
+                Coming soon
+              </button>
+            )
+          ) : (
             <a
               className="primary-button"
-              href={product.downloadUrl}
+              href={whatsappLink}
               target="_blank"
               rel="noreferrer"
             >
-              <Download size={17} />
-              Get product <ArrowUpRight size={16} />
+              <MessageCircle size={17} />
+              Buy via WhatsApp <ArrowUpRight size={16} />
             </a>
-          ) : (
-            <button className="primary-button disabled-button" disabled>
-              Coming soon
-            </button>
           )}
 
           <div className="detail-note">
