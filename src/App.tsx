@@ -20,7 +20,10 @@ import {
   Compass,
   ShoppingBag,
   UserRound,
-  ShieldCheck
+  ShieldCheck,
+  Mail,
+  MessageCircle,
+  Send
 } from "lucide-react";
 import AdminPanel from "./AdminPanel";
 import { getProducts, type Product } from "./products";
@@ -38,6 +41,7 @@ function Header() {
           <NavLink to="/explore">Explore</NavLink>
           <NavLink to="/shop">Shop</NavLink>
           <NavLink to="/about">About</NavLink>
+          <NavLink to="/contact">Contact</NavLink>
         </nav>
 
         <div className="header-actions">
@@ -45,6 +49,7 @@ function Header() {
             <ShieldCheck size={15} />
             Admin
           </Link>
+
           <Link to="/shop" className="header-shop">
             Shop Now <ArrowUpRight size={15} />
           </Link>
@@ -97,6 +102,7 @@ function Footer() {
           <Link to="/shop">Shop</Link>
           <Link to="/about">About</Link>
           <Link to="/profile">Profile</Link>
+          <Link to="/contact">Contact</Link>
           <Link to="/admin">Admin</Link>
         </div>
       </div>
@@ -491,6 +497,129 @@ function ProfilePage() {
   );
 }
 
+function ContactPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const subject = encodeURIComponent("ANSU CREATE Support Request");
+    const body = encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+    );
+
+    window.location.href =
+      `mailto:officialanexz@gmail.com?subject=${subject}&body=${body}`;
+  }
+
+  return (
+    <main className="page-container contact-page">
+      <div className="page-heading">
+        <span className="section-kicker">WE'RE HERE TO HELP</span>
+        <h1>Contact<span>.</span></h1>
+        <p>
+          Have a question, need support, or want to share an idea?
+          We'd love to hear from you.
+        </p>
+      </div>
+
+      <div className="contact-grid">
+        <section className="contact-info">
+          <span className="section-kicker">GET IN TOUCH</span>
+          <h2>Let's talk about<br />your next idea.</h2>
+          <p>
+            For product questions, support or general enquiries,
+            contact us through email.
+          </p>
+
+          <a
+            href="mailto:officialanexz@gmail.com"
+            className="contact-email"
+          >
+            <span className="contact-icon">
+              <Mail size={20} />
+            </span>
+            <span>
+              <small>EMAIL SUPPORT</small>
+              <strong>officialanexz@gmail.com</strong>
+            </span>
+            <ArrowUpRight size={18} />
+          </a>
+
+          <div className="contact-note">
+            <MessageCircle size={19} />
+            <p>We appreciate your feedback and suggestions.</p>
+          </div>
+        </section>
+
+        <form className="contact-form" onSubmit={handleSubmit}>
+          <h2>Send us a message.</h2>
+
+          <label htmlFor="contact-name">Your name</label>
+          <input
+            id="contact-name"
+            type="text"
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+
+          <label htmlFor="contact-email">Email address</label>
+          <input
+            id="contact-email"
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <label htmlFor="contact-message">Message</label>
+          <textarea
+            id="contact-message"
+            placeholder="How can we help you?"
+            rows={5}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            required
+          />
+
+          <button type="submit" className="primary-button">
+            Prepare message <Send size={16} />
+          </button>
+
+          <p className="contact-form-note">
+            This opens your email app with your message pre-filled.
+          </p>
+        </form>
+      </div>
+
+      <section className="contact-faq">
+        <span className="section-kicker">NEED HELP?</span>
+        <h2>Frequently asked questions.</h2>
+
+        <div className="faq-item">
+          <h3>How can I get a product?</h3>
+          <p>Visit the Shop page, select a product and follow its available instructions.</p>
+        </div>
+
+        <div className="faq-item">
+          <h3>Where can I ask for product support?</h3>
+          <p>Send your question using the contact form or email support directly.</p>
+        </div>
+
+        <div className="faq-item">
+          <h3>Can I suggest a new product?</h3>
+          <p>Yes. Share your idea with us through the contact form.</p>
+        </div>
+      </section>
+    </main>
+  );
+}
+
 function AboutPage() {
   return (
     <main className="page-container about-page">
@@ -587,23 +716,5 @@ function Site() {
           <Route path="/explore" element={<ExplorePage products={products} />} />
           <Route path="/shop" element={<ShopPage products={products} />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/product/:id" element={<ProductPage products={products} />} />
-          <Route path="/admin" element={<AdminRoute />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      )}
-
-      <Footer />
-      <BottomNavigation />
-    </>
-  );
-}
-
-export default function App() {
-  return (
-    <BrowserRouter>
-      <Site />
-    </BrowserRouter>
-  );
-}
+          <Route path="/contact" element={<ContactPage />} />
+        
