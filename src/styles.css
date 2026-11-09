@@ -1304,4 +1304,151 @@ button {
   }
 
   .banner-symbol {
-    disp
+    display: none;
+  }
+
+  .page-heading h1 {
+    font-size: 58px;
+  }
+
+  .explore-category-grid {
+    grid-template-columns: 1fr;
+    margin-bottom: 60px;
+  }
+
+  .shop-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .shop-search {
+    width: 100%;
+  }
+
+  .product-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .detail-image {
+    height: 300px;
+  }
+
+  .detail-copy h1 {
+    font-size: 32px;
+  }
+
+  .about-story {
+    grid-template-columns: 1fr;
+    padding: 24px;
+    gap: 30px;
+  }
+
+  .about-monogram {
+    height: 170px;
+    font-size: 90px;
+  }
+
+  .about-story h2 {
+    font-size: 28px;
+  }
+
+  .about-values {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 55px 0;
+  }
+
+  .about-cta {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 28px;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .contact-info h2 {
+    font-size: 32px;
+  }
+
+  .contact-form {
+    padding: 23px 18px;
+  }
+
+  .contact-faq {
+    margin-top: 65px;
+  }
+
+  .profile-card {
+    padding: 35px 20px;
+  }
+
+  .footer-main,
+  .footer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .footer-links {
+    gap: 18px;
+  }
+
+  .site-footer {
+    padding: 35px 22px 25px;
+  }
+
+  /* Fixed mobile bottom navigation */
+
+  .bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 200;
+    height: 70px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    padding: 6px 10px calc(6px + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, .97);
+    border-top: 1px solid var(--border);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 -8px 25px #21133408;
+  }
+
+  .bottom-nav a {
+    min-width: 0;
+    height: 54px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: #96909d;
+    font-size: 10px;
+    font-weight: 600;
+    transition: .2s;
+  }
+
+  .bottom-nav a.active {
+    color: var(--purple);
+  }
+
+  .bottom-nav a.active svg {
+    stroke-width: 2.5;
+  }
+
+  .bottom-nav a span {
+    line-height: 1;
+  }
+}
+
+@media (min-width: 651px) {
+  .bottom-nav {
+    display: none;
+  }
+}
+
