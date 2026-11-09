@@ -23,7 +23,7 @@ body {
   background: #fff;
 }
 
-button, input {
+button, input, textarea {
   font: inherit;
 }
 
@@ -39,6 +39,8 @@ a {
 button {
   cursor: pointer;
 }
+
+/* HEADER */
 
 .site-header {
   height: 76px;
@@ -74,7 +76,7 @@ button {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 36px;
+  gap: 30px;
 }
 
 .nav-links a {
@@ -93,6 +95,25 @@ button {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.header-admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 13px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: #514b5a;
+  font-size: 12px;
+  font-weight: 700;
+  transition: .2s;
+}
+
+.header-admin:hover {
+  color: var(--purple);
+  border-color: #d8c9ff;
+  background: #faf8ff;
 }
 
 .header-shop {
@@ -120,6 +141,8 @@ button {
   border: 0;
   color: #24202c;
 }
+
+/* HERO */
 
 .home-hero {
   max-width: 1250px;
@@ -345,6 +368,8 @@ button {
   color: var(--purple);
 }
 
+/* SECTIONS AND PRODUCTS */
+
 .content-section,
 .page-container {
   max-width: 1250px;
@@ -551,7 +576,7 @@ button {
   line-height: 1;
 }
 
-/* Inner pages */
+/* INNER PAGES */
 
 .page-heading {
   margin-bottom: 50px;
@@ -626,6 +651,8 @@ button {
   margin-bottom: 30px;
 }
 
+/* SHOP */
+
 .shop-toolbar {
   display: flex;
   align-items: center;
@@ -686,6 +713,8 @@ button {
   border-color: var(--purple);
   color: white;
 }
+
+/* PRODUCT DETAILS */
 
 .product-detail {
   min-height: 600px;
@@ -752,6 +781,244 @@ button {
 .detail-note svg {
   color: var(--purple);
 }
+
+/* PROFILE */
+
+.profile-page {
+  min-height: 650px;
+}
+
+.profile-card {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 45px 35px;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 18px 50px #21133408;
+}
+
+.profile-icon {
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #f1ebff;
+  color: var(--purple);
+}
+
+.profile-card h2 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 25px;
+  margin: 13px 0;
+}
+
+.profile-card > p {
+  max-width: 390px;
+  margin: 0 auto 25px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.profile-card .primary-button {
+  margin: 5px auto 0;
+}
+
+.profile-card .profile-help {
+  margin: 25px auto 0;
+  font-size: 12px;
+}
+
+.profile-help a {
+  color: var(--purple);
+  font-weight: 700;
+}
+
+/* CONTACT */
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 65px;
+  align-items: start;
+}
+
+.contact-info {
+  padding-top: 10px;
+}
+
+.contact-info h2 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 38px;
+  line-height: 1.2;
+  letter-spacing: -1.8px;
+  margin: 18px 0;
+}
+
+.contact-info > p {
+  max-width: 420px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.9;
+  margin-bottom: 30px;
+}
+
+.contact-email {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  max-width: 420px;
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  transition: .2s;
+}
+
+.contact-email:hover {
+  border-color: #cbbaf7;
+  background: #fcfbff;
+}
+
+.contact-icon {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--purple);
+  background: #f1ebff;
+  border-radius: 9px;
+}
+
+.contact-email > span:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.contact-email small {
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  font-weight: 800;
+}
+
+.contact-email strong {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.contact-email > svg {
+  margin-left: auto;
+  color: var(--purple);
+  flex-shrink: 0;
+}
+
+.contact-note {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 28px;
+  color: var(--purple);
+}
+
+.contact-note p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.contact-form {
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 15px 45px #21133408;
+}
+
+.contact-form h2 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 23px;
+  margin: 0 0 25px;
+}
+
+.contact-form label {
+  display: block;
+  margin: 18px 0 8px;
+  color: #4f4957;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  resize: vertical;
+  color: #17151f;
+  font-size: 12px;
+  background: #fff;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--purple);
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: #aaa4b0;
+}
+
+.contact-form .primary-button {
+  margin-top: 20px;
+}
+
+.contact-form-note {
+  margin: 13px 0 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.contact-faq {
+  margin-top: 100px;
+  padding-top: 45px;
+  border-top: 1px solid var(--border);
+}
+
+.contact-faq > h2 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 30px;
+  letter-spacing: -1px;
+  margin: 12px 0 30px;
+}
+
+.faq-item {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-item h3 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+
+.faq-item p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* ABOUT */
 
 .about-story {
   display: grid;
@@ -844,6 +1111,8 @@ button {
   font-size: 13px;
 }
 
+/* FOOTER */
+
 .site-footer {
   border-top: 1px solid var(--border);
   padding: 42px max(calc((100% - 1120px) / 2), 6%);
@@ -887,7 +1156,13 @@ button {
   font-size: 10px;
 }
 
-/* Responsive */
+/* BOTTOM NAVIGATION */
+
+.bottom-nav {
+  display: none;
+}
+
+/* RESPONSIVE */
 
 @media (max-width: 900px) {
   .home-hero {
@@ -912,9 +1187,21 @@ button {
     grid-template-columns: 190px 1fr;
     gap: 35px;
   }
+
+  .nav-links {
+    gap: 17px;
+  }
+
+  .nav-links a {
+    font-size: 11px;
+  }
 }
 
 @media (max-width: 650px) {
+  body {
+    padding-bottom: 76px;
+  }
+
   .site-header {
     height: 66px;
   }
@@ -927,38 +1214,26 @@ button {
     font-size: 19px;
   }
 
-  .header-shop {
-    padding: 10px 12px;
+  .header-actions {
+    gap: 7px;
+  }
+
+  .header-admin {
+    padding: 9px 10px;
     font-size: 10px;
   }
 
-  .menu-toggle {
-    display: grid;
-    place-items: center;
-    padding: 7px;
+  .header-admin svg {
+    width: 13px;
+  }
+
+  .header-shop {
+    padding: 10px 11px;
+    font-size: 10px;
   }
 
   .nav-links {
     display: none;
-    position: absolute;
-    top: 65px;
-    left: 0;
-    width: 100%;
-    padding: 18px 22px 23px;
-    background: white;
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 12px 20px #2113340c;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 22px;
-  }
-
-  .nav-links.open {
-    display: flex;
-  }
-
-  .nav-links a {
-    font-size: 14px;
   }
 
   .home-hero {
@@ -1029,74 +1304,4 @@ button {
   }
 
   .banner-symbol {
-    display: none;
-  }
-
-  .page-heading h1 {
-    font-size: 58px;
-  }
-
-  .explore-category-grid {
-    grid-template-columns: 1fr;
-    margin-bottom: 60px;
-  }
-
-  .shop-toolbar {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .shop-search {
-    width: 100%;
-  }
-
-  .product-detail-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
-  .detail-image {
-    height: 300px;
-  }
-
-  .detail-copy h1 {
-    font-size: 32px;
-  }
-
-  .about-story {
-    grid-template-columns: 1fr;
-    padding: 24px;
-    gap: 30px;
-  }
-
-  .about-monogram {
-    height: 170px;
-    font-size: 90px;
-  }
-
-  .about-story h2 {
-    font-size: 28px;
-  }
-
-  .about-values {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    padding: 55px 0;
-  }
-
-  .about-cta {
-    align-items: flex-start;
-    flex-direction: column;
-    padding: 28px;
-  }
-
-  .footer-main,
-  .footer-bottom {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .footer-links {
-    gap: 18px;
-  }
-}
+    disp
