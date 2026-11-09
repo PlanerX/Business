@@ -714,6 +714,7 @@ function Site() {
         <div className="loading-screen">Loading ANSU CREATE...</div>
       ) : (
         <Routes>
+          <Route path="/" element={<HomePage products={products} />} />
           <Route path="/explore" element={<ExplorePage products={products} />} />
           <Route path="/shop" element={<ShopPage products={products} />} />
           <Route path="/profile" element={<ProfilePage />} />
