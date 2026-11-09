@@ -30,6 +30,13 @@ import {
 import AdminPanel from "./AdminPanel";
 import { getProducts, type Product } from "./products";
 
+import {
+  LoginPage,
+  RegisterPage,
+  ForgotPasswordPage,
+  ProfilePage
+} from "./AuthPages";
+
 function Header() {
   return (
     <header className="site-header">
@@ -47,6 +54,11 @@ function Header() {
         </nav>
 
         <div className="header-actions">
+          <Link to="/profile" className="header-admin">
+            <UserRound size={15} />
+            Account
+          </Link>
+
           <Link to="/admin" className="header-admin">
             <ShieldCheck size={15} />
             Admin
@@ -104,6 +116,7 @@ function Footer() {
           <Link to="/shop">Shop</Link>
           <Link to="/about">About</Link>
           <Link to="/profile">Profile</Link>
+          <Link to="/login">Login</Link>
           <Link to="/contact">Contact</Link>
           <Link to="/admin">Admin</Link>
         </div>
@@ -206,6 +219,7 @@ function HomePage({ products }: { products: Product[] }) {
             <Link to="/shop" className="primary-button">
               Explore the shop <ArrowUpRight size={17} />
             </Link>
+
             <Link to="/about" className="secondary-button">
               Our story
             </Link>
@@ -464,41 +478,6 @@ function ProductPage({ products }: { products: Product[] }) {
   );
 }
 
-function ProfilePage() {
-  return (
-    <main className="page-container profile-page">
-      <div className="page-heading">
-        <span className="section-kicker">YOUR ANSU CREATE ACCOUNT</span>
-        <h1>My Profile<span>.</span></h1>
-        <p>
-          Your personal space for account details and digital purchases.
-        </p>
-      </div>
-
-      <section className="profile-card">
-        <div className="profile-icon">
-          <UserRound size={34} />
-        </div>
-
-        <span className="section-kicker">CUSTOMER ACCOUNT</span>
-        <h2>Welcome to ANSU CREATE.</h2>
-        <p>
-          Customer account features, order history and purchased
-          downloads will be available here.
-        </p>
-
-        <Link to="/shop" className="primary-button">
-          Explore products <ArrowRight size={16} />
-        </Link>
-
-        <p className="profile-help">
-          Need help? <Link to="/contact">Contact support</Link>
-        </p>
-      </section>
-    </main>
-  );
-}
-
 function ContactPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -717,11 +696,17 @@ function Site() {
           <Route path="/" element={<HomePage products={products} />} />
           <Route path="/explore" element={<ExplorePage products={products} />} />
           <Route path="/shop" element={<ShopPage products={products} />} />
+
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/product/:id" element={<ProductPage products={products} />} />
           <Route path="/admin" element={<AdminRoute />} />
+
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       )}
