@@ -9,6 +9,7 @@ import {
   useParams,
   useNavigate
 } from "react-router-dom";
+
 import {
   ArrowRight,
   ArrowUpRight,
@@ -25,6 +26,7 @@ import {
   MessageCircle,
   Send
 } from "lucide-react";
+
 import AdminPanel from "./AdminPanel";
 import { getProducts, type Product } from "./products";
 
@@ -716,5 +718,4 @@ function Site() {
           <Route path="/explore" element={<ExplorePage products={products} />} />
           <Route path="/shop" element={<ShopPage products={products} />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/contact" element={<ContactPage />} />
-        
+          <Route path="/contact" element={<ContactPage />}
