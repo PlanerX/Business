@@ -714,8 +714,27 @@ function Site() {
         <div className="loading-screen">Loading ANSU CREATE...</div>
       ) : (
         <Routes>
-          <Route path="/" element={<HomePage products={products} />} />
           <Route path="/explore" element={<ExplorePage products={products} />} />
           <Route path="/shop" element={<ShopPage products={products} />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/contact" element={<ContactPage />}
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/product/:id" element={<ProductPage products={products} />} />
+          <Route path="/admin" element={<AdminRoute />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      )}
+
+      <Footer />
+      <BottomNavigation />
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Site />
+    </BrowserRouter>
+  );
+}
